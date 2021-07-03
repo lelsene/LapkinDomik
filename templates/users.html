@@ -1,0 +1,58 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="{% url 'users' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table class="table table-hover">
+                <thead>
+                <tr class="text-center">
+                    <th>Фото</th>
+                    <th>E-mail</th>
+                    <th>Тип</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>Дата рождения</th>
+                    <th>Пол</th>
+                    <th>Город</th>
+                    <th>Телефон</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user, profile in list_users %}
+                    <tr onclick="document.location ='profile/{{ user.id }}';" class="text-center">
+                        <td>
+                            <div class="image">
+                                <img src="{% static profile.image %}" class="rounded float-start" alt="">
+                            </div>
+                        </td>
+                        <td>{{ user.email }}</td>
+                        {% for type in types %}
+                            {% if user.type == type.0 %}
+                                <td>{{ type.1 }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td>{{ profile.name }}</td>
+                        <td>{{ profile.surname }}</td>
+                        <td>{{ profile.birthday }}</td>
+                        <td>{{ profile.sex }}</td>
+                        <td>{{ profile.city }}</td>
+                        <td>{{ profile.phoneNumber }}</td>
+                        <td class="text-center">
+                            <button type="submit" class="btn btn-danger" name="userDelete"
+                                    value="{{ user.id }}">Удалить
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

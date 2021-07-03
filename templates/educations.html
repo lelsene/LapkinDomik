@@ -1,0 +1,54 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/crud.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="/educations" method="POST">
+            {% csrf_token %}
+            <div class="btn-add">
+                <button type="submit" class="btn btn-info" name="educationAdd">Добавить
+                </button>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr class="text-center">
+                    <th>Название</th>
+                    <th>Ресурс</th>
+                    <th>Описание</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for education in educations %}
+                    <tr class="text-center">
+                        <td>
+                            <input class="form-control" id="Title" name="Title_{{ education.id }}" value="{{ education.title }}">
+                        </td>
+                        <td>
+                            <input class="form-control" id="Source" name="Source_{{ education.id }}" value="{{ education.source }}">
+                        </td>
+                        <td>
+                            <input class="form-control" id="Description" name="Description_{{ education.id }}"
+                                   value="{{ education.description }}">
+                        </td>
+                        <td class="text-center">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info" name="educationUpdate"
+                                        value="{{ education.id }}">Изменить
+                                </button>
+                                <button type="submit" class="btn btn-danger" name="educationDelete"
+                                        value="{{ education.id }}">Удалить
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

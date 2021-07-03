@@ -1,0 +1,75 @@
+{% extends template %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="inline-group main-group">
+                <div class="left">
+                    <div class="title">
+                        <div class="first_line">
+                            <h4>Лапкин домик - </h4>
+                        </div>
+                        <div class="second_line">
+                            <h4>второй дом для ваших питомцев!</h4>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-reg" name="registr">Присоединиться</button>
+                    <hr>
+                    <div class="inline-group auth-group">
+                        <h6 style="font-family: ISKRA mediumItalic;">Уже с нами?</h6>
+                        <button type="submit" class="btn btn-auth" name="auth">Авторизоваться</button>
+                    </div>
+                    <div class="inline-group auth-group" style="margin-top: 20px">
+                        <div class="img_icon">
+                            <img src={% static 'images/u17.png' %}>
+                        </div>
+                        <h6 style="margin-left: 10px; margin-top: 10px; font-family: ISKRA mediumItalic;">Готовы заботиться о ваших питомцах в
+                            Ульяновске</h6>
+                    </div>
+                </div>
+                <div class="img">
+                    <img src={% static 'images/u10.png' %}>
+                </div>
+            </div>
+            <div class="info">
+                <h4 style="margin-top: 60px;display: flex; justify-content: center">Почему с нами безопасно?</h4>
+            </div>
+            <div class="inline-group info-group" style="width:700px; margin-left: 100px; margin-bottom: 25px">
+                <div class="img_info">
+                    <img src={% static 'images/u24.png' %}>
+                </div>
+                <div class="text">
+                    <h5 style="margin-left: 10px; margin-top: 10px">Проверяем ситтеров</h5>
+                    <h6 style="margin-left: 10px; margin-top: 10px">Проверяем паспорт, соцсети и другие данные о ситтере
+                        в открытых источниках. Каждый ситтер проходит обучение и тестирование.</h6>
+                </div>
+            </div>
+            <div class="inline-group info-group" style="width:700px; margin-left: 100px; margin-bottom: 25px">
+                <div class="img_info">
+                    <img src={% static 'images/u28.png' %}>
+                </div>
+                <div class="text">
+                    <h5 style="margin-left: 10px; margin-top: 10px">Заключаем договор</h5>
+                    <h6 style="margin-left: 10px; margin-top: 10px">Ситтер заключает договор с клиентом и обязуется
+                        оказывать услуги по уходу за животным надлежащим образом. Договор идентичен договору в
+                        гостиницах для животных.</h6>
+                </div>
+            </div>
+            <div class="inline-group info-group" style="width:700px; margin-left: 100px; margin-bottom: 80px">
+                <div class="img_info">
+                    <img src={% static 'images/u32.png' %}>
+                </div>
+                <div class="text">
+                    <h5 style="margin-left: 10px; margin-top: 10px">На связи 24|7</h5>
+                    <h6 style="margin-left: 10px; margin-top: 10px">Мы всегда на связи, даже ночью. Оперативно поможем, если что-то пойдет не так.</h6>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

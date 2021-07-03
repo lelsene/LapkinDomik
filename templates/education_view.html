@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/education_view.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="./{{ education.id }}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3" style="display: flex; justify-content: center">
+                <h4>{{ education.title }}</h4>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" id="floatingTextarea" disabled
+                          name="description">{{ education.description }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Дополнительная информация по теме: </label>
+                <a href="{{ education.source }}">{{ education.source }}</a>
+            </div>
+            {% if test_id != -1 %}
+                <button type="submit" class="btn btn-info" name="test_view" value="{{ test_id }}">Тестирование</button>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

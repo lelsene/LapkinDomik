@@ -1,0 +1,45 @@
+.container {
+    margin-top: 25px;
+    font-family: ISKRA regular;
+    color: #036791;
+    font-size: 18px;
+}
+
+.sitter-img {
+    height: auto;
+    width: 150px;
+    align-items: center;
+}
+
+.sitter-img-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+a {
+    text-decoration: none;
+    color: #036791;
+    font-size: 18px;
+}
+
+a:hover {
+    color: #036791;
+}
+
+.crt-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-info {
+    color: white;
+    background-color: #169BD5;
+    width: fit-content;
+}
+
+.inline-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

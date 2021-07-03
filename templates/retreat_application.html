@@ -1,0 +1,173 @@
+{% extends template %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/retreat_application.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="./{{ sitter.id }}" method="POST">
+            {% csrf_token %}
+            <div style="display: flex;justify-content: flex-end;color:black;">
+                <h6 class="form-label">{{ application.status }}</h6>
+            </div>
+            <div class="inline-group profile-group">
+                <img src="{% static role.image %}" class="rounded float-start profile" alt="profile img">
+                <label class="form-label">{{ role.name }}</label>
+                <label class="form-label">{{ role.surname }}</label>
+            </div>
+            <div class="inline-group">
+                {% if not view %}
+                    <div class="" style="margin-right: 25px">
+                        <label for="dateFrom" class="form-label">Отдадите</label>
+                        <input type="date" class="form-control" id="dateFrom" name="dateFrom"
+                               value="{{ application.dateFrom }}" required>
+                    </div>
+                    <div class="">
+                        <label for="dateTo" class="form-label">Заберете</label>
+                        <input type="date" class="form-control" id="dateTo" name="dateTo"
+                               value="{{ application.dateTo }}" required>
+                    </div>
+                {% else %}
+                    <div class="" style="margin-right: 25px">
+                        <label for="dateFrom" class="form-label">Заберете</label>
+                        <input type="date" class="form-control" id="dateFrom" name="dateFrom"
+                               value="{{ application.dateFrom }}" required>
+                    </div>
+                    <div class="">
+                        <label for="dateTo" class="form-label">Вернете</label>
+                        <input type="date" class="form-control" id="dateTo" name="dateTo"
+                               value="{{ application.dateTo }}" required>
+                    </div>
+                {% endif %}
+            </div>
+            {% if not view %}
+                <p id="help" class="form-text text-center text-danger" style="font-size:16px">{{ message }}</p>
+            {% else %}
+                <div class="mb-3"></div>
+            {% endif %}
+            <div class="mb-3">
+                {% if not view %}
+                    <small>Формула расчета: {{ sitter.price }} ₽ x {{ selectedPets|length }} питомцев x {{ daysCount }}
+                        суток
+                    </small>
+                {% else %}
+                    <small>Формула расчета: {{ sitter.price }} ₽ x {{ pets|length }} питомцев x {{ daysCount }} суток
+                    </small>
+                {% endif %}
+                <div><label for="price" class="form-label">Стоимость передержки</label></div>
+                <div class="inline-group">
+                    {% if not view %}
+                        <input type="text" class="form-control" id="price" name="price"
+                               value={{ application.totalCost }} required disabled style="margin-right: 10px">
+                        <button type="submit" class="btn btn-light" name="refresh">Обновить</button>
+                    {% else %}
+                        <input type="text" class="form-control" id="price" name="price"
+                               value={{ application.totalCost }} required disabled>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Номер телефона</label>
+                <input type="tel" class="form-control" id="phone" name="phone" value="{{ role.phoneNumber }}"
+                       pattern="\+7\([9]{1}[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+7(9xx)-xxx-xx-xx"
+                       required disabled>
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="floatingTextarea"
+                              name="description">{{ application.description }}</textarea>
+                {% else %}
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="floatingTextarea"
+                              name="description" disabled>{{ application.description }}</textarea>
+                {% endif %}
+            </div>
+            {% if not view %}
+                <label class="form-label ">Питомцы</label>
+                <select class="form-select mb-3" name="pets" multiple size="{{ pets|length }}" required>
+                    {% for pet in pets %}
+                        {% if pet in selectedPets %}
+                            <option selected value="{{ pet.id }}">{{ pet.name }},
+                                тип: {{ pet.petType.title }}, возраст: {{ pet.age }}, пол: {{ pet.sex.0 }}
+                            </option>
+                        {% else %}
+                            <option value="{{ pet.id }}">{{ pet.name }}, тип: {{ pet.petType.title }},
+                                возраст: {{ pet.age }}, пол: {{ pet.sex.0 }}
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% else %}
+                {% if pets|length >= 2 %}
+                    <div class="row row-cols-1 row-cols-md-2 g-4">
+                {% else %}
+                    <div class="row row-cols-1 row-cols-md-{{ pets|length }} g-4">
+                {% endif %}
+                {% for pet in pets %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="pet-img-container">
+                                <img src='{% static pet.image %}' class="pet-img" alt="pet img">
+                            </div>
+                            <div class="card-body">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="petName" name="petName_{{ pet.id }}"
+                                           value='{{ pet.name }}' required disabled>
+                                    <label for="floatingInput">Кличка</label>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="petAge" name="petAge_{{ pet.id }}"
+                                           value={{ pet.age }} min="0" step="1" required disabled>
+                                    <label for="floatingInput">Возраст</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="floatingSelect" name="petSex_{{ pet.id }}" required
+                                            disabled>
+                                        {% for sex in sexes %}
+                                            {% if pet.sex == sex %}
+                                                <option selected value="{{ sex }}">{{ sex }}</option>
+                                            {% else %}
+                                                <option value="{{ sex }}">{{ sex }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Пол</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="floatingSelect" name="petType_{{ pet.id }}" required
+                                            disabled>
+                                        {% for petType in petTypes %}
+                                            {% if pet.petType.title == petType.title %}
+                                                <option selected
+                                                        value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% else %}
+                                                <option value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Тип</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="floatingTextarea" style="height: 80px"
+                                              name="petDescription_{{ pet.id }}"
+                                              disabled>{{ pet.description }}</textarea>
+                                    <label for="floatingTextarea">Описание</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="mb-3">
+                {% if not view %}
+                    <button type="submit" class="btn btn-info mb-3" style="width: 100%" name="createApplication">
+                        Отправить заявку
+                    </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

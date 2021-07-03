@@ -1,0 +1,56 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sitter_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="{% url 'sitter_applications' %}" method="POST">
+            {% csrf_token %}
+            <table class="table table-hover">
+                <thead>
+                <tr class="text-center">
+                    <th>Фото</th>
+                    <th>E-mail</th>
+                    <th>Дата</th>
+                    <th>Средний балл</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sitter_application,result in sitter_applications %}
+                    <tr class="text-center">
+                        <td>
+                            <div class="image">
+                                <img src="{% static sitter_application.user.profile.image %}"
+                                     class="rounded float-start" alt="profile img">
+                            </div>
+                        </td>
+
+                        <td>{{ sitter_application.user.email }}</td>
+                        <td>{{ sitter_application.date }}</td>
+                        <td>{{ result }}</td>
+                        <td>{{ sitter_application.status }}</td>
+                        <td>
+                            {% if sitter_application.status == "На рассмотрении" %}
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-info" name="sitterApplicationYes"
+                                            value="{{ sitter_application.id }}">Принять
+                                    </button>
+                                    <button type="submit" class="btn btn-danger" name="sitterApplicationNo"
+                                            value="{{ sitter_application.id }}">Отклонить
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

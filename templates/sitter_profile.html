@@ -1,0 +1,162 @@
+{% extends template %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/profile.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="inline-group profile-group">
+                <img src="{% static profile.image %}" class="rounded float-start profile" alt="profile img">
+                <label class="form-label">{{ profile.name }}</label>
+                <label class="form-label">{{ profile.surname }}</label>
+            </div>
+            {% if not view %}
+                <div class="inline-group">
+                    <div class="mb-3" style="margin-right: 25px">
+                        <label for="name" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ profile.name }}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" id="surname" name="surname"
+                               value="{{ profile.surname }}" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Фото</label>
+                    <input class="form-control form-control-sm mb-3" type="file" id="formFile" name="image">
+                </div>
+            {% endif %}
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="sex" class="form-label">Пол</label>
+                    <select class="form-select" aria-label="Default select example" name="sex" required>
+                        {% for sex in sexes %}
+                            {% if profile.sex == sex %}
+                                <option selected value="{{ sex }}">{{ sex }}</option>
+                            {% else %}
+                                <option value="{{ sex }}">{{ sex }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <label for="sex" class="form-label">Пол</label>
+                    <select class="form-select" name="sex" required disabled>
+                        {% for sex in sexes %}
+                            {% if profile.sex == sex %}
+                                <option selected value="{{ sex }}">{{ sex }}</option>
+                            {% else %}
+                                <option value="{{ sex }}">{{ sex }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="birthday" class="form-label">Дата рождения</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday"
+                           value="{{ profile.birthday }}" required>
+                {% else %}
+                    <label for="birthday" class="form-label">Дата рождения</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday"
+                           value="{{ profile.birthday }}" required disabled>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="city" class="form-label">Город</label>
+                    <select class="form-select" aria-label="Default select example" name="city" required>
+                        {% for city in cities %}
+                            {% if profile.city == city.name %}
+                                <option selected value="{{ city.name }}">{{ city.name }}</option>
+                            {% else %}
+                                <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <label for="city" class="form-label">Город</label>
+                    <select class="form-select" aria-label="Default select example" name="city" required disabled>
+                        {% for city in cities %}
+                            {% if profile.city == city.name %}
+                                <option selected value="{{ city.name }}">{{ city.name }}</option>
+                            {% else %}
+                                <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="phone" class="form-label">Номер телефона</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phoneNumber }}"
+                           pattern="\+7\([9]{1}[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+7(9xx)-xxx-xx-xx"
+                           required>
+                {% else %}
+                    <label for="phone" class="form-label">Номер телефона</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phoneNumber }}"
+                           pattern="\+7\([9]{1}[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+7(9xx)-xxx-xx-xx"
+                           required disabled>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="floatingTextarea"
+                              name="description">{{ profile.description }}</textarea>
+                {% else %}
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea class="form-control" id="floatingTextarea"
+                              name="description" disabled>{{ profile.description }}</textarea>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="price" class="form-label">Цена</label>
+                    <input type="number" class="form-control" id="price" name="price"
+                           value={{ profile.price }}  min="0" step="1" required>
+                {% else %}
+                    <label for="price" class="form-label">Цена</label>
+                    <input type="number" class="form-control" id="price" name="price"
+                           value={{ profile.price }}  min="0" step="1" required disabled>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="petType" class="form-label">Тип животного</label>
+                    <select class="form-select" name="petType" multiple>
+                        {% for petType in petTypes %}
+                            {% if petType.title in profile_petTypes %}
+                                <option selected value="{{ petType.title }}">{{ petType.title }}</option>
+                            {% else %}
+                                <option value="{{ petType.title }}">{{ petType.title }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <label for="petType" class="form-label">Тип животного</label>
+                    <select class="form-select" name="petType" multiple disabled>
+                        {% for petType in petTypes %}
+                            {% if petType.title in profile_petTypes %}
+                                <option selected value="{{ petType.title }}">{{ petType.title }}</option>
+                            {% else %}
+                                <option value="{{ petType.title }}">{{ petType.title }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="mb-3" style="display: flex; justify-content: center">
+                {% if not view %}
+                    <button type="submit" class="btn btn-info" name="profileSave">Сохранить</button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

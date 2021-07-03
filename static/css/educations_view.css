@@ -1,0 +1,40 @@
+@font-face {
+    font-family: ISKRA regular;
+    src: url(/static/fonts/IskraCYR-Regular.otf);
+}
+
+@font-face {
+    font-family: ISKRA mediumItalic;
+    src: url(/static/fonts/IskraCYR-MediumItalic.otf);
+}
+
+.form {
+    font-family: ISKRA regular;
+    height: fit-content;
+    width: fit-content;
+    padding-top: 15px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #036791;
+}
+
+.list-group {
+    margin-top: 20px;
+    width: 60vw;
+}
+
+.btn-info {
+    color: white;
+    background-color: #169BD5;
+    margin-left: 20px;
+}
+
+.inline-group{
+    display: flex;
+    justify-content: space-between;
+
+}
+

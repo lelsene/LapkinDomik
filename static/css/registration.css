@@ -1,0 +1,71 @@
+@font-face {
+    font-family: ISKRA regular;
+    src: url(/static/fonts/IskraCYR-Regular.otf);
+}
+
+@font-face {
+    font-family: ISKRA mediumItalic;
+    src: url(/static/fonts/IskraCYR-MediumItalic.otf);
+}
+
+.form {
+    font-family: ISKRA regular;
+    height: fit-content;
+    width: fit-content;
+    padding-top: 15px;
+    margin-right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form .form-control {
+    color: black;
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form .btn {
+    width: 100%;
+}
+
+.form .h1 {
+    color: #036791;
+    font-family: ISKRA mediumItalic;
+    display: flex;
+    justify-content: center;
+}
+
+.form .form-text {
+    color: red;
+}
+
+.form .form-label {
+    color: #036791;
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.form .btn {
+    color: white;
+    background-color: #169BD5;
+}
+
+.form .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form .login label {
+    display: inline-block;
+    /*margin-right: 5px;*/
+}
+
+.form .login .link {
+    color: #169BD5;
+}

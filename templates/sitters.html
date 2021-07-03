@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sitters.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <form action="{% url 'sitters' %}" method="POST">
+            {% csrf_token %}
+            <div class="row align-items-start">
+                <div class="col-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="form-label">Город</label>
+                            <select class="form-select mb-3" name="city" required>
+                                {% for city in cities %}
+                                    {% if params.city == city.name %}
+                                        <option selected value="{{ city.name }}">{{ city.name }}</option>
+                                    {% else %}
+                                        <option value="{{ city.name }}">{{ city.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label class="form-label">Сортировать</label>
+                            <select class="form-select mb-3" name="sort">
+                                {% for sort in sorts %}
+                                    {% if sort == params.sort %}
+                                        <option selected value="{{ sort }}">{{ sort }}</option>
+                                    {% else %}
+                                        <option value="{{ sort }}">{{ sort }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label class="form-label">Цена за сутки</label>
+                            <div class="inline-group mb-3">
+                                <label class="form-label">от&nbsp;</label>
+                                <div class="form-floating mb-3 cd" style="width:100px">
+                                    <input type="number" class="form-control"
+                                           name="priceFrom" min='0' value="{{ params.priceFrom }}">
+                                    <label for="floatingInput">₽</label>
+                                </div>
+                                <label class="form-label">&nbsp;до&nbsp;</label>
+                                <div class="form-floating mb-3 cd" style="width:100px">
+                                    <input type="number" class="form-control"
+                                           name="priceTo" min='0' value="{{ params.priceTo }}">
+                                    <label for="floatingInput">₽</label>
+                                </div>
+                            </div>
+                            <label class="form-label ">Пол</label>
+                            <select class="form-select mb-3" name="sex" multiple size="{{ sexes|length }}">
+                                {% for sex in sexes %}
+                                    {% if sex in params.sex %}
+                                        <option selected value="{{ sex }}">{{ sex }}</option>
+                                    {% else %}
+                                        <option value="{{ sex }}">{{ sex }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label class="form-label ">Тип животного</label>
+                            <select class="form-select mb-3" name="petTypes" multiple size="{{ types|length }}">
+                                {% for type in types %}
+                                    {% if type.title in params.petTypes %}
+                                        <option selected value="{{ type.title }}">{{ type.title }}</option>
+                                    {% else %}
+                                        <option value="{{ type.title }}">{{ type.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <div class="crt-btn">
+                                <button type="submit" class="btn btn-info mb-3" name="apply"
+                                        value="{{ sitter.id }}">Применить
+                                </button>
+                            </div>
+                            <div class="crt-btn">
+                                <button type="submit" class="btn btn-light mb-3" name="reset"
+                                        value="{{ sitter.id }}">Сбросить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        {% for sitter, age, types in sitters %}
+                            <div class="col-auto">
+                                <div class="card h-100">
+                                    <a href="/profile/{{ sitter.user.id }}">
+                                        <div class="sitter-img-container">
+                                            <img src='{% static sitter.image %}' class="sitter-img" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{ sitter.name }} {{ sitter.surname }}</h4>
+                                            <h6 class="card-subtitle mb-2 text-muted">{{ age }}</h6>
+                                            <h5 class="card-text">{{ sitter.price }} руб.</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">в сутки</h6>
+                                            <p class="card-text">{{ sitter.description }}</p>
+                                            <h6 class="card-subtitle mb-2 text-muted">Беру на передержку:</h6>
+                                            <h5 class="card-text">{{ types }}</h5>
+                                        </div>
+                                    </a>
+                                    <div class="crt-btn">
+                                        <button type="submit" class="btn btn-info mb-3" name="createApplication"
+                                                value="{{ sitter.id }}">Отправить заявку
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

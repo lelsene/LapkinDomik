@@ -1,0 +1,66 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/crud.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="/answers" method="POST">
+            {% csrf_token %}
+            <div class="btn-add">
+                <button type="submit" class="btn btn-info" name="answerAdd">Добавить
+                </button>
+            </div>
+            <div class="form-text">{{ Message }}</div>
+            <table class="table table-hover">
+                <thead>
+                <tr class="text-center">
+                    <th>Ответ</th>
+                    <th>Правильность</th>
+                    <th>Вопрос</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for answer in answers %}
+                    <tr class="text-center">
+                        <td>
+                            <input class="form-control" id="Title" name="Title_{{ answer.id }}" value="{{ answer.title }}">
+                        </td>
+                        <td>
+                            {% if answer.isRight %}
+                                <input class="form-check-input" type="checkbox" name="IsRight_{{ answer.id }}" checked>
+                            {% else %}
+                                <input class="form-check-input" type="checkbox" name="IsRight_{{ answer.id }}">
+                            {% endif %}
+                            <div class="form-text">{{ Message }}</div>
+                        </td>
+                        <td>
+                            <select class="form-select" aria-label="Default select example" name="Question_{{ answer.id }}">
+                                <option selected>{{ answer.question.title }}</option>
+                                {% for question in questions %}
+                                    {% if question.title != answer.question.title %}
+                                        <option>{{ question.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info" name="answerUpdate"
+                                        value="{{ answer.id }}">Изменить
+                                </button>
+                                <button type="submit" class="btn btn-danger" name="answerDelete"
+                                        value="{{ answer.id }}">Удалить
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

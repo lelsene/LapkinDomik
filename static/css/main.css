@@ -1,0 +1,93 @@
+@font-face {
+    font-family: ISKRA regular;
+    src: url(/static/fonts/IskraCYR-Regular.otf);
+}
+
+@font-face {
+    font-family: ISKRA mediumItalic;
+    src: url(/static/fonts/IskraCYR-MediumItalic.otf);
+}
+
+@font-face {
+    font-family: ISKRA UltraBoldItalic;
+    src: url(/static/fonts/IskraCYR-UltraBoldItalic.otf);
+}
+
+hr {
+    background-color: #036791;
+    height: 3px;
+}
+
+.form {
+    font-family: ISKRA regular;
+    color: #036791;
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form .inline-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img img {
+    width: 500px;
+    height: auto;
+}
+
+.img_icon img {
+    width: 20px;
+    height: auto;
+}
+
+h4 {
+    font-family: ISKRA UltraBoldItalic;
+}
+
+.second_line h4 {
+    margin-left: 50px;
+}
+
+.btn-reg {
+    font-family: ISKRA mediumItalic;
+    color: white;
+    background-color: #036791;
+    border-radius: 30px;
+    height: 60px;
+    width: 200px;
+    margin-top: 25px;
+    margin-left: 100px;
+}
+
+.btn-reg:hover {
+    color: white;
+    background-color: #169BD5;
+}
+
+.btn-auth {
+    font-family: ISKRA mediumItalic;
+    color: #036791;
+    background-color: white;
+    border-radius: 30px;
+    height: 50px;
+    width: 170px;
+    margin-left: 30px;
+}
+
+.btn-auth:hover {
+    background-color: #DAF1F7;
+    color: #036791;
+}
+
+.img_info img {
+    width: 100px;
+    height: auto;
+}
+
+
+h5{
+    font-family: ISKRA mediumItalic;
+}

@@ -1,0 +1,246 @@
+{% extends template %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="inline-group profile-group">
+                <img src="{% static profile.image %}" class="rounded float-start profile" alt="profile img">
+                <label class="form-label">{{ profile.name }}</label>
+                <label class="form-label">{{ profile.surname }}</label>
+            </div>
+            {% if not view %}
+                <div class="inline-group">
+                    <div class="mb-3" style="margin-right: 25px">
+                        <label for="name" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ profile.name }}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" id="surname" name="surname"
+                               value="{{ profile.surname }}"
+                               required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Фото</label>
+                    <input class="form-control form-control-sm mb-3" type="file" id="formFile" name="image">
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="sex" class="form-label">Пол</label>
+                    <select class="form-select" name="sex" required>
+                        {% for sex in sexes %}
+                            {% if profile.sex == sex %}
+                                <option selected value="{{ sex }}">{{ sex }}</option>
+                            {% else %}
+                                <option value="{{ sex }}">{{ sex }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <label for="sex" class="form-label">Пол</label>
+                    <select class="form-select" name="sex" required disabled>
+                        {% for sex in sexes %}
+                            {% if profile.sex == sex %}
+                                <option selected value="{{ sex }}">{{ sex }}</option>
+                            {% else %}
+                                <option value="{{ sex }}">{{ sex }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="birthday" class="form-label">Дата рождения</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday"
+                           value="{{ profile.birthday }}" required>
+                {% else %}
+                    <label for="birthday" class="form-label">Дата рождения</label>
+                    <input type="date" class="form-control" id="birthday" name="birthday"
+                           value="{{ profile.birthday }}" required disabled>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="city" class="form-label">Город</label>
+                    <select class="form-select" name="city" required>
+                        {% for city in cities %}
+                            {% if profile.city == city.name %}
+                                <option selected value="{{ city.name }}">{{ city.name }}</option>
+                            {% else %}
+                                <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <label for="city" class="form-label">Город</label>
+                    <select class="form-select" name="city" required disabled>
+                        {% for city in cities %}
+                            {% if profile.city == city.name %}
+                                <option selected value="{{ city.name }}">{{ city.name }}</option>
+                            {% else %}
+                                <option value="{{ city.name }}">{{ city.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if not view %}
+                    <label for="phone" class="form-label">Номер телефона</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phoneNumber }}"
+                           pattern="\+7\([9]{1}[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+7(9xx)-xxx-xx-xx"
+                           required>
+                {% else %}
+                    <label for="phone" class="form-label">Номер телефона</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ profile.phoneNumber }}"
+                           pattern="\+7\([9]{1}[0-9]{2}\)-[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="+7(9xx)-xxx-xx-xx"
+                           required disabled>
+                {% endif %}
+            </div>
+            {% if not view %}
+                <div class="inline-group" style="justify-content: space-between">
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-info" name="profileSave">Сохранить</button>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success" name="petAdd">Добавить животного</button>
+                    </div>
+                </div>
+            {% endif %}
+            {% if pets|length >= 2 %}
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% else %}
+                <div class="row row-cols-1 row-cols-md-{{ pets|length }} g-4">
+            {% endif %}
+            {% for pet in pets %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="pet-img-container">
+                            <img src='{% static pet.image %}' class="pet-img" alt="pet img">
+                        </div>
+                        <div class="card-body">
+                            {% if not view %}
+                                <div class="mb-3">
+                                    <input class="form-control form-control-sm mb-3" type="file" id="formFile"
+                                           name="petImage_{{ pet.id }}">
+                                </div>
+                            {% endif %}
+
+                            <div class="form-floating mb-3">
+                                {% if not view %}
+                                    <input type="text" class="form-control" id="petName" name="petName_{{ pet.id }}"
+                                           value='{{ pet.name }}' required>
+                                    <label for="floatingInput">Кличка</label>
+                                {% else %}
+                                    <input type="text" class="form-control" id="petName" name="petName_{{ pet.id }}"
+                                           value='{{ pet.name }}' required disabled>
+                                    <label for="floatingInput">Кличка</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                {% if not view %}
+                                    <input type="number" class="form-control" id="petAge" name="petAge_{{ pet.id }}"
+                                           value={{ pet.age }} min="0" step="1" required>
+                                    <label for="floatingInput">Возраст</label>
+                                {% else %}
+                                {% endif %}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {% if not view %}
+                                    <select class="form-select" id="petSex" name="petSex_{{ pet.id }}" required>
+                                        {% for sex in sexes %}
+                                            {% if pet.sex == sex %}
+                                                <option selected value="{{ sex }}">{{ sex }}</option>
+                                            {% else %}
+                                                <option value="{{ sex }}">{{ sex }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Пол</label>
+                                {% else %}
+                                    <select class="form-select" id="petSex" name="petSex_{{ pet.id }}" required
+                                            disabled>
+                                        {% for sex in sexes %}
+                                            {% if pet.sex == sex %}
+                                                <option selected value="{{ sex }}">{{ sex }}</option>
+                                            {% else %}
+                                                <option value="{{ sex }}">{{ sex }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Пол</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {% if not view %}
+                                    <select class="form-select" id="petType" name="petType_{{ pet.id }}"
+                                            aria-label="Floating label select example" required>
+                                        {% for petType in petTypes %}
+                                            {% if pet.petType.title == petType.title %}
+                                                <option selected
+                                                        value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% else %}
+                                                <option value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Тип</label>
+                                {% else %}
+                                    <select class="form-select" id="petType" name="petType_{{ pet.id }}" required
+                                            disabled>
+                                        {% for petType in petTypes %}
+                                            {% if pet.petType.title == petType.title %}
+                                                <option selected
+                                                        value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% else %}
+                                                <option value="{{ petType.title }}">{{ petType.title }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <label for="floatingSelect">Тип</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-floating mb-3">
+                                {% if not view %}
+                                    <textarea class="form-control" id="petDescription" style="height: 80px"
+                                              name="petDescription_{{ pet.id }}">{{ pet.description }}</textarea>
+                                    <label for="floatingTextarea">Описание</label>
+                                {% else %}
+                                    <textarea class="form-control" id="petDescription" style="height: 80px"
+                                              name="petDescription_{{ pet.id }}"
+                                              disabled>{{ pet.description }}</textarea>
+                                    <label for="floatingTextarea">Описание</label>
+                                {% endif %}
+                            </div>
+                            {% if not view %}
+                                <button type="submit" class="btn btn-info mb-3 pets-btn" name="petSave"
+                                        value="{{ pet.id }}">
+                                    Сохранить
+                                </button>
+                                <button type="submit" class="btn btn-danger mb-3 pets-btn" name="petDelete"
+                                        value="{{ pet.id }}">
+                                    Удалить
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

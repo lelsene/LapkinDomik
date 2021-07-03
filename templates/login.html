@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/registration.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="h1">
+                <h1 class="h3 mb-3 fw-normal">Авторизоваться</h1>
+            </div>
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Электронная почта</label>
+                <input type="email" class="form-control" id="inputEmail" name="Email" aria-describedby="emailHelp"
+                       value="{{ email }}" required>
+                <div id="emailHelp" class="form-text">{{ emailMessage }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="inputPassword" name="Password"
+                       aria-describedby="passwordHelp" value="{{ password }}" required>
+                <div id="passwordHelp" class="form-text">{{ passwordMessage }}</div>
+            </div>
+            <button type="submit" class="btn btn-info mb-3">Авторизоваться</button>
+            <div class="login">
+                <label class="form-label">Не зарегистрированы?</label>
+                <a href="registration"><label class="form-label link">Присоединиться</label></a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

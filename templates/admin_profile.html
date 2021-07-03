@@ -1,0 +1,42 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/profile.css' %}">{% endblock %}
+{% block content %}
+    <div class="form">
+        <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="h1">
+                <h1 class="h3 mb-3 fw-normal">Администратор</h1>
+            </div>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Электронная почта</label>
+                <input type="email" class="form-control" id="Email" name="Email" value="{{ email }}" required>
+                <div id="emailHelp" class="form-text">{{ emailMessage }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="surname" class="form-label">Старый пароль</label>
+                <input type="password" class="form-control" id="Password_old" name="Password_old"
+                       value="{{ password_old }}">
+                <div id="passwordHelp" class="form-text">{{ passwordMessage_old }}</div>
+            </div>
+            <div class="mb-3">
+                <label for="surname" class="form-label">Новый пароль</label>
+                <input type="password" class="form-control" id="Password_new" name="Password_new"
+                       value="{{ password_new }}">
+                <div id="passwordHelp" class="form-text">{{ passwordMessage_new }}</div>
+            </div>
+
+            <div class="inline-group" style="display: flex; justify-content: center">
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-info"
+                            name="profileSave" value="{{ user.id }}">Изменить
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

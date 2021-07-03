@@ -1,0 +1,27 @@
+@font-face {
+    font-family: ISKRA regular;
+    src: url(/static/fonts/IskraCYR-Regular.otf);
+}
+
+@font-face {
+    font-family: ISKRA mediumItalic;
+    src: url(/static/fonts/IskraCYR-MediumItalic.otf);
+}
+
+.form {
+    font-family: ISKRA regular;
+    padding-top: 15px;
+    margin: 0;
+    font-size: 16px;
+    width: 90%;
+}
+
+.btn-info {
+    color: white;
+    background-color: #169BD5;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+}

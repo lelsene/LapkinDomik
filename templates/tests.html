@@ -1,0 +1,64 @@
+{% extends 'base_admin.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/crud.css' %}">{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="/tests" method="POST">
+            {% csrf_token %}
+            <div class="btn-add">
+                <button type="submit" class="btn btn-info" name="testAdd">Добавить
+                </button>
+            </div>
+            <div class="form-text">{{ Message }}</div>
+            <table class="table table-hover">
+                <thead>
+                <tr class="text-center">
+                    <th>Название</th>
+                    <th>Тема обучения</th>
+                    <th>Вопросы</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for test, questions in list_tests %}
+                    <tr class="text-center">
+                        <td>
+                            <input class="form-control" id="Title" name="Title_{{ test.id }}" value="{{ test.title }}">
+                        </td>
+                        <td>
+                            <select class="form-select" aria-label="Default select example"
+                                    name="Education_{{ test.id }}">
+                                <option selected>{{ test.education.title }}</option>
+                                {% for free_education in free_educations %}
+                                    <option>{{ free_education.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            {% for question in questions %}
+                                <div>
+                                    {{ question.title }}
+                                </div>
+                            {% endfor %}
+                        </td>
+                        <td class="text-center">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info" name="testUpdate"
+                                        value="{{ test.id }}">Изменить
+                                </button>
+                                <button type="submit" class="btn btn-danger" name="testDelete"
+                                        value="{{ test.id }}">Удалить
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock %}

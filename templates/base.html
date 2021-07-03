@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Lapkin Domik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static '/css/base.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static '/css/header.css' %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static '/css/footer.css' %}" type="text/css"/>
+    {% block styles %}{% endblock %}
+</head>
+<body>
+<div class="header">
+    <ul class="primary">
+        <li><a href="/"><img src={% static 'images/header_logo.png' %}  alt="logo"></a></li>
+        <li><a href="/sitters">Найти ситтера</a></li>
+        <li><a href="/retreat_applications">Заявки на передержку</a></li>
+        <li><a href="/sitter/application">Стать ситтером</a></li>
+        <li>
+            <a href="/profile">Мой кабинет</a>
+            <ul class="sub">
+                <li><a href="/logout">Выход</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+{% block content %}{% endblock %}
+<div class="footer ">
+    <div class="text">
+        <div>Лапкин Домик © 2020</div>
+        <div>Полушкина Евгения, Субботина Ксения, Шакарян Анастасия</div>
+    </div>
+</div>
+</body>
+</html>

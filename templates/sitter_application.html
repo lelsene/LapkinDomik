@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/sitter_application.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="/sitter/application" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="inline-group">
+                <h3>Результаты ваших тестирований по темам обучения</h3>
+                <div style="display: flex; align-items: center; margin-bottom: 20px">
+                    <small>{{ status }}</small>
+                </div>
+            </div>
+            <div class="list-group">
+                {% for education, result in educations_results %}
+                    <div class="list-group-item list-group-item-action">
+                        <div class="inline-group">
+                            <h5>{{ education.title }}</h5>
+                            <h5 style="margin-left: 20px">{{ result }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="inline-group">
+                <div class="label">
+                    <label class="form-label">Готовы стать ситтером?</label>
+                </div>
+                <div class="label">
+                    <a href="/sitter/educations">
+                        <label class="form-label">Перейти к обучению</label>
+                    </a>
+                </div>
+            </div>
+            {% if totalResult >= 50 %}
+                {% if status == "На рассмотрении" %}
+                    <label class="error">Ваша заявка на рассмотрении.</label>
+                {% endif %}
+                {% if status == "Принята" %}
+                    <label class="error">Ваша заявка уже принята.</label>
+                {% endif %}
+                {% if status == "Отклонена" or status == "" %}
+                    <button type="submit" class="btn btn-info" name="createApplication">Подать заявку</button>
+                {% endif %}
+            {% else %}
+                <label class="error">Вы не можете подать заявку, результаты ваших тестирований слишком низкие.</label>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

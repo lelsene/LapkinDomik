@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/educations_view.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="/sitter/educations" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3" style="display: flex; justify-content: center">
+                <h4>Необходимые темы для изучения</h4>
+            </div>
+            <div class="list-group">
+                {% for education, test_id in educations %}
+                    <a href="/sitter/education/{{ education.id }}" class="list-group-item list-group-item-action"
+                       aria-current="true">
+                        <div class="inline-group">
+                            <h5>{{ education.title }}</h5>
+                            {% if test_id != -1 %}
+                                <button type="submit" class="btn btn-info mb-3 pets-btn" name="test_view"                                        value="{{ test_id }}">
+                                    Тестирование
+                                </button>
+                            {% endif %}
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends template %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/retreat_applications.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form">
+        <form action="{% url 'retreat_applications' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="list-group">
+                {% for pets, retreat_application, sitter in retreat_applications %}
+                    {% with counter=forloop.counter0 %}
+                        <div class="list-group-item list-group-item-action">
+                            <a href="/retreat_application/view/{{ retreat_application.id }}">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h4 class="mb-1"><b>{{ retreat_application.dateFrom }}
+                                        - {{ retreat_application.dateTo }}</b></h4>
+                                    <small class="text-muted" name="applicationStatus_{{ retreat_application.id }}">
+                                        {{ retreat_application.status }}</small>
+                                </div>
+                                {% if owner %}
+                                    <h6 class="mb-1">Ситтер: {{ sitter }}</h6>
+                                {% endif %}
+                                <h6 class="mb-1">Стоимость передержки: <b>{{ retreat_application.totalCost }} ₽</b></h6>
+                                <div class="inline-group" style="margin-top: 16px">
+                                    {% for pet in pets %}
+                                        <div class="mb-3">
+                                            <h6 class="mb-1">
+                                                Питомец: {{ pet.petType.title }}
+                                            </h6>
+                                            <h6 class="mb-1">
+                                                Возраст: {{ pet.age }}
+                                            </h6>
+                                            <h6 class="mb-1">
+                                                Пол: {{ pet.sex }}
+                                            </h6>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </a>
+                            {% if not owner %}
+                                {% if status ==  retreat_application.status and not admin %}
+                                    <div class="inline-group">
+                                        <button type="submit" class="btn btn-info mb-3 pets-btn"
+                                                name="retreatAccept"
+                                                value="{{ retreat_application.id }}"> Принять
+                                        </button>
+                                        <button type="submit" class="btn btn-danger mb-3 pets-btn"
+                                                name="retreatReject"
+                                                value="{{ retreat_application.id }}"> Отклонить
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                {% if status ==  retreat_application.status and not admin %}
+                                    <div class="inline-group">
+                                        <button type="submit" class="btn btn-danger mb-3 pets-btn"
+                                                name="retreatDelete"
+                                                value="{{ retreat_application.id }}">Удалить
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+{% endblock %}
